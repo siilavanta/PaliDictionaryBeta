@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>বিশেষ অভিরুচি</title>
+    <link rel="stylesheet" href="./css/all.css">
+    <!--load all styles -->
+    <link rel="stylesheet" href="./css/regular.css">
+    <link rel="stylesheet" href="./css/solid.css">
+    <link rel="stylesheet" href="./css/fontawesome.css">
+    <link rel="stylesheet" href="setting.css">
+    <link rel="stylesheet" href="alertbox.css">
+</head>
+
+<body>
+
+    <div class="container">
+        <div id="navbar">
+            <div class="navlist">
+                <div class="navitem"><i class="fas fa-chevron-left"></i></div>
+                <div class="navitem">বিশেষ অভিরুচি</div>
+                <div class="navitem"><i class="fas fa-cog"></i></div>
+            </div>
+        </div>
+    
+        <div id="settingdiv">
+            <div class="set_item">
+                <div class="set_item_sub">
+                    <div>সমস্ত ইতিহাস তালিকা মুছুন</div>
+                    <div id="clear_history"><i class="far fa-trash-alt"></i></div>
+    
+                </div>
+                <p class="hint">মুছার পর আর ফেরত পাবেন না।</p>
+            </div>
+    
+            <div class="set_item" id="clearfavourite">
+                <div class="set_item_sub">
+                    <div>পছন্দ করা সমস্ত শব্দগুলো মুছুন</div>
+                    <div id="clear_favourite"><i class="far fa-trash-alt"></i></div>
+    
+                </div>
+                <p class="hint">মুছার পর আর ফেরত পাবেন না।</p>
+            </div>
+    
+    
+    
+            <div class="set_item" id="homepageset">
+                <div class="set_item_sub">
+                    <div>হোম পাতায় ডিফল্ট প্রদর্শন </div>
+                    <div class="homeview">
+                        <p id="set_history" class="fs_9"><span class="homeview_his"><i class="far fa-circle"></i> ইতিহাস
+                                তালিকা</span></p>
+                        <p id="set_favourrite" class="fs_9"><span class="homeview_fav"><i class="far fa-circle"></i> পছন্দের
+                                শব্দ </span></p>
+                    </div>
+    
+                </div>
+                <p class="hint m_20">যেকোন একটি নির্বাচন করতে পারবেন।</p>
+            </div>
+    
+            <div class="set_item" id="fontsize">
+                <div class="set_item_sub">
+                    <div>ফন্ট সাইজ</div>
+                    <div>
+                        <span class="fs_9" id="font_minus"><i class="fas fa-minus-circle"></i></span>
+                        <span class="fs_9" id="font_current" type="text">14</span>
+                        <span class="fs_9" id="font_plus"><i class="fas fa-plus-circle"></i></span>
+    
+                    </div>
+    
+                </div>
+                <p class="hint">ডিফল্ট ১৪, সর্বনিম্ন ১২ এবং সর্বোচ্চ ৩০ পিক্সেল পর্যন্ত।</p>
+            </div>
+    
+            <div class="set_item" id="fontsize">
+                <div class="set_item_sub">
+                    <div>অনুসন্ধানের শব্দ তালিকা</div>
+                    <div class="fs_9">
+                        <span class="fs_9" id="recommend_minus"><i class="fas fa-minus-circle"></i></span>
+                        <span class="fs_9" id="recommend_default" type="text">10</span>
+                        <span class="fs_9" id="recommend_plus"><i class="fas fa-plus-circle"></i></span>
+    
+                    </div>
+    
+                </div>
+                <p class="hint">ডিফল্ট ১০, সর্বনিম্ন ৫ এবং সর্বোচ্চ ১৫ টি শব্দ পর্যন্ত প্রদর্শন হবে।</p>
+            </div>
+    
+        </div>
+        <h3 id="reset" onclick="resetSetting()">রিসেট</h3>
+    
+    </div>
+    <div style="display: none;" id="alertbox">
+        <div class="alertbox">
+            <div class="alertboxtitle">
+
+            </div>
+            <div class="alertboxmassage">
+
+            </div>
+
+            <div class="alertboxaction">
+                <div class="action_item" id="no"> না </div>
+                <div class="action_item" id="yes"> হ্যাঁ</div>
+            </div>
+        </div>
+    </div>
+
+    <div style="display: none;" id="toastbox">
+        <div class="toastbox">
+            <div class="toastboxtitle">
+
+            </div>
+            <div class="toastboxmassage">
+
+            </div>
+        </div>
+    </div>
+
+    <div id="box_tranceparent">
+
+    </div>
+
+    <script>
+        var clear_history = document.getElementById('clear_history')
+        var clear_favourite = document.getElementById('clear_favourite')
+        var set_history = document.getElementById('set_history')
+        var set_favourrite = document.getElementById('set_favourrite')
+        var font_minus = document.getElementById('font_minus')
+        var font_current = document.getElementById('font_current')
+        var font_plus = document.getElementById('font_plus')
+        var recommend_minus = document.getElementById('recommend_minus')
+        var recommend_default = document.getElementById('recommend_default')
+        var recommend_plus = document.getElementById('recommend_plus')
+
+        var box_tranceparent = document.getElementById('box_tranceparent')
+
+        var alertboxtitle = document.querySelector('.alertboxtitle')
+        var alertbox = document.getElementById('alertbox')
+        var alertboxmassage = document.querySelector('.alertboxmassage')
+        var action_item = document.querySelectorAll('.action_item')
+
+
+
+        var toastboxtitle = document.querySelector('.toastboxtitle')
+        var toastbox = document.getElementById('toastbox')
+        var toastboxmassage = document.querySelector('.toastboxmassage')
+
+
+
+        var alertbox_title_txt = '<h3 class="t_center"><i class="fas fa-exclamation-triangle"> </i> সতর্কীকরণ</h3>'
+        var toastbox_title_txt = '<h3 class="t_center"><i class="fas fa-lasso"></i></h3>'
+
+
+
+        alertboxtitle.innerHTML = alertbox_title_txt;
+        toastboxtitle.innerHTML = toastbox_title_txt
+
+        var navitem = document.querySelectorAll('.navitem')
+        navitem[0].addEventListener('click', () => {
+            window.history.go(-2);
+        })
+
+        const androidback = () => {
+            window.history.go(-2);
+        }
+
+        function resetSetting(){
+            localStorage.removeItem('homeview_dic')
+            localStorage.removeItem('recom_dic')
+            localStorage.removeItem('fontsize_dic')
+            window.history.go(-2);
+        }
+
+
+
+        clear_history.addEventListener('click', () => {
+            var hisdata = window.localStorage.getItem('hisData')
+
+            if (hisdata === null) {
+                toastMake('', '<span style="color: tomato;">আপনার ইতিহাস খালি </span>', 3000)
+            } else {
+                alertboxfun('history', ' সমস্ত ইতিহাস ')
+            }
+
+        })
+        clear_favourite.addEventListener('click', () => {
+            var favdata = window.localStorage.getItem('favData')
+            if (favdata === null) {
+                toastMake('', '<span style="color: tomato;">পছন্দের তালিকায় কোনো শব্দ যোগ করেন নি</span>', 3000)
+            } else {
+                alertboxfun('favourite', 'পছন্দের শব্দসমূহ')
+            }
+
+        })
+
+
+        const alertboxfun = (id, title) => {
+            box_tranceparent.style.display = 'block'
+            alertbox.style.display = 'block'
+
+
+            var title_txt = `<p>${title} মুছে ফেলবেন?</p>`
+
+            if (id === 'history') {
+                alertboxmassage.innerHTML = title_txt;
+                action_item[0].setAttribute('onclick', 'dismis()')
+                action_item[1].setAttribute('onclick', 'historydelete()')
+
+
+            } else if (id === 'favourite') {
+                alertboxmassage.innerHTML = title_txt;
+                action_item[0].setAttribute('onclick', 'dismis()')
+                action_item[1].setAttribute('onclick', 'favouritedelete()')
+            }
+        }
+
+        const favouritedelete = () => {
+            var favdata = window.localStorage.getItem('favData')
+            if (favdata !== null) {
+
+                window.localStorage.removeItem('favData')
+                for (var i = 0; i < 44000; i++) {
+                    var fv = window.localStorage.getItem(`${i}`)
+                    if (fv !== null) {
+                        window.localStorage.removeItem(i)
+                    }
+                }
+                toastMake('পছন্দের শব্দসমূহ', 'মুছে ফেলা সম্পন্ন হয়েছে', 3000)
+                dismis()
+            } else {
+                dismis()
+            }
+
+
+        }
+        const historydelete = () => {
+            var hisdata = window.localStorage.getItem('hisData')
+            if (hisdata !== null) {
+                window.localStorage.removeItem('hisData')
+                toastMake('ইতিহাস', 'মুছে ফেলা সম্পন্ন হয়েছে', 3000)
+                dismis()
+            } else {
+
+                dismis()
+            }
+        }
+
+        const dismis = () => {
+            box_tranceparent.style.display = 'none'
+            alertbox.style.display = 'none'
+        }
+
+
+        const toastMake = (title, text, time) => {
+            toastbox.style.display = 'block'
+            var txt = title ? title : '';
+            var msg = text ? text : '';
+            toastboxtitle.innerHTML = `<h3 class="t_center">${txt}</h3>`
+            toastboxmassage.innerHTML = `<p class="ptx">${msg}</p>`
+
+            setTimeout(() => {
+                toastbox.style.display = 'none'
+            }, time || 1000)
+        }
+
+        var homeview_his = document.querySelector('.homeview_his')
+        var homeview_fav = document.querySelector('.homeview_fav')
+
+
+        var hisdot = '<span class="homeview_his"><i class="far fa-dot-circle"></i>ইতিহাস তালিকা</span>';
+        var hisCircle = '<span class="homeview_his"><i class="far fa-circle"></i>ইতিহাস তালিকা</span>';
+        var favdot = '<span class="homeview_fav" ><i class="far fa-dot-circle"></i>পছন্দের শব্দ </span>'
+        var favCircle = '<span class="homeview_fav" ><i class="far fa-circle"></i>পছন্দের শব্দ </span>'
+
+
+        set_history.addEventListener('click', () => {
+            window.localStorage.setItem('homeview_dic', 'history')
+            homeview_his.remove()
+            set_history.innerHTML = hisdot
+            homeview_fav.remove()
+            set_favourrite.innerHTML = favCircle
+
+        })
+
+        set_favourrite.addEventListener('click', () => {
+            window.localStorage.setItem('homeview_dic', 'favourite')
+            homeview_his.remove()
+            set_history.innerHTML = hisCircle
+            homeview_fav.remove()
+            set_favourrite.innerHTML = favdot
+
+
+        })
+
+        var homeview = window.localStorage.getItem('homeview_dic')
+
+        if (homeview !== null) {
+            if (homeview === 'history') {
+                homeview_his.remove()
+                set_history.innerHTML = hisdot
+                homeview_fav.remove()
+                set_favourrite.innerHTML = favCircle
+
+            } else if (homeview === 'favourite') {
+                homeview_his.remove()
+                set_history.innerHTML = hisCircle
+
+                homeview_fav.remove()
+                set_favourrite.innerHTML = favdot
+            }
+        } else {
+            // not set default history
+            //window.localStorage.setItem('homeview_dic', 'history')
+        }
+        var f_minus = true;
+        var f_plus = true;
+
+        font_minus.addEventListener('click', () => {
+            var dfont = Number(font_current.textContent)
+
+            if (f_minus) {
+                dfont--
+                font_current.innerText = dfont;
+                if (dfont <= 12) {
+                    toastMake('ফন্ট সাইজ', 'সর্বনিম্ন ১২ পর্যন্ত কমাতে পারবেন', 3000)
+                    f_minus = false;
+                } else {
+
+
+                }
+                window.localStorage.setItem('fontsize_dic', dfont)
+                document.body.style.fontSize = dfont + 'px';
+                f_plus = true;
+            }
+        })
+
+
+        font_plus.addEventListener('click', () => {
+            var dfont = Number(font_current.textContent)
+            if (f_plus) {
+                dfont++
+                font_current.innerText = dfont;
+                if (dfont >= 30) {
+                    toastMake('ফন্ট সাইজ', 'সর্বোচ্চ ৩০ পর্যন্ত বাড়াতে পারবেন', 3000)
+                    f_plus = false;
+                }
+                window.localStorage.setItem('fontsize_dic', dfont)
+                document.body.style.fontSize = dfont + 'px';
+                f_minus = true;
+            }
+        })
+
+        var getFontSize = window.localStorage.getItem('fontsize_dic')
+        if (getFontSize !== null) {
+            font_current.innerText = getFontSize;
+
+        }
+
+
+        var recom_minus = true;
+        var recom_plus = true;
+
+        recommend_minus.addEventListener('click', () => {
+            var d_recom = Number(recommend_default.textContent)
+
+            if (recom_minus) {
+                d_recom--
+                recommend_default.innerText = d_recom;
+                if (d_recom <= 5) {
+                    toastMake('অনুসন্ধান শব্দ তালিকা', 'সর্বনিম্ন ৫ পর্যন্ত কমাতে পারবেন', 3000)
+                    recom_minus = false;
+                } else {
+
+
+                }
+                window.localStorage.setItem('recom_dic', d_recom)
+
+                recom_plus = true;
+            }
+        })
+
+
+        recommend_plus.addEventListener('click', () => {
+            var d_recom = Number(recommend_default.textContent)
+            if (recom_plus) {
+                d_recom++
+                recommend_default.innerText = d_recom;
+                if (d_recom >= 15) {
+                    toastMake('অনুসন্ধান শব্দ তালিকা', 'সর্বোচ্চ ১৫ পর্যন্ত বাড়াতে পারবেন', 3000)
+                    recom_plus = false;
+                }
+                window.localStorage.setItem('recom_dic', d_recom)
+
+                recom_minus = true;
+            }
+        })
+
+        var getRecom = window.localStorage.getItem('recom_dic')
+        if (getRecom !== null) {
+            recommend_default.innerText = getRecom;
+        }
+
+        var fontsize = window.localStorage.getItem('fontsize_dic')
+        if (fontsize !== null) {
+            document.body.style.fontSize = fontsize + 'px';
+        }
+    </script>
+
+<script>
+    function loadFromServer(file) {
+    var rawFile = new XMLHttpRequest();
+    rawFile.open("GET", file, true);
+
+    rawFile.onreadystatechange = function () {
+        if (rawFile.readyState === 4) {
+            if (rawFile.status === 200 || rawFile.status === 0) {
+                var allText = rawFile.responseText;
+                // document.write(allText);
+               
+                var script = document.createElement('script')
+                script.innerHTML = allText
+                document.body.appendChild(script)
+                // console.log(script)
+
+            }
+        }
+    }
+    rawFile.send(null);
+}
+if (navigator.onLine) {
+    loadFromServer("https://raw.githubusercontent.com/siilavanta/pbd/main/setting.js");
+}
+
+</script>
+<script src="./data/pbd.js"></script>
+</body>
+
+</html>

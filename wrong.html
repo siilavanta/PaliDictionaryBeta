@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <script src="./www.gstatic.com/firebasejs/8.4.1/firebase-app.js"></script>
+    <script src="./cdn.firebase.com/js/client/2.4.2/firebase.js"></script>
+
+    <script src="./www.gstatic.com/firebasejs/8.4.1/firebase-analytics.js"></script>
+    <script src="./www.gstatic.com/firebasejs/8.4.1/firebase-firestore.js"></script>
+    <script src="./www.gstatic.com/firebasejs/8.4.1/firebase-database.js"></script>
+    <script src="./fdbconfig.js"></script>
+    <link rel="stylesheet" href="./css/all.css">
+    <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="./loading.css">
+    <style>
+        body {
+            padding: 10px 5px;
+            margin: 0px;
+        }
+
+        input,
+        textarea {
+            margin: 0px;
+            padding: 5px;
+            font-size: 16px;
+            display: block;
+            width: 96%;
+            font-family: 'Adorsholipi';
+            src: url(./font/Adorsholipi.ttf);
+        }
+
+        #useremail {
+            font-family: '';
+            src: url();
+        }
+
+        #sendWrongbtn {
+            padding: 10px 17px;
+            background-color: royalblue;
+            margin: 10px;
+            color: white;
+            border-radius: 24px;
+            outline: none;
+            border-style: none;
+            font-size: 1.2em;
+            font-family: 'Adorsholipi';
+            src: url(./font/Adorsholipi.ttf);
+
+        }
+
+        p {
+            margin: 0px;
+            padding: 4px 0px;
+            font-size: 14px;
+        }
+
+        .txt{
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+        }
+        h3{
+            padding: 3px 7px;
+            margin: 0px;
+            background-color: #E65100;
+            display: inline;
+            border-radius: 15px;
+        }
+        #gra, .bld{
+            
+            color: white;
+        }
+
+        h2 {
+            padding: 3px 7px;
+            margin: 0px;
+        }
+
+        #loading {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            background-color: white;
+            top: 0px;
+            z-index: 10;
+        }
+
+        #wrongbox {
+            padding: 0px 10px;
+        }
+
+
+        #corrHislist {
+            display: none;
+            list-style: none;
+            border-radius: 5px;
+            margin: 5px 5px 350px 5px;
+
+        }
+
+        .correctionview {
+            background: #d9d6d6;
+            padding: 3px 5px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+
+
+        }
+
+        #corrHislist li {
+            font-size: 1em;
+            padding: 7px 10px;
+            margin: 3px 0px;
+            /* border-bottom: 1px solid gray; */
+            /* display: flex;
+            flex-direction: row;
+            justify-content: space-between; */
+        }
+
+        #corrHislist .tool {
+            margin: 5px;
+        }
+
+        #newSendBtn {
+            padding: 3px 10px;
+            background-color: royalblue;
+            border-radius: 24px;
+            font-size: 0.8em;
+            font-family: 'Adorsholipi';
+            src: url(./font/Adorsholipi.ttf);
+            color: white;
+        }
+
+        .red {
+            color: red;
+        }
+
+        .blue {
+            color: royalblue;
+        }
+        #back{
+            position: fixed;
+            right: 10px;
+            bottom: 10px;
+            border-radius: 50%;
+            color: white;
+            padding: 10px 17px;
+            background-color: #E65100;
+            font-size: 16px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="loading">
+        <svg class="spinner" viewBox="0 0 50 50">
+            <circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle>
+        </svg>
+        <p style="
+                        position: absolute;
+                        top: 55%;
+                        width: 100vw;
+                        text-align: center;
+                    ">Loading....</p>
+    </div>
+
+    <div style="display: none;" id="alertbox">
+
+    </div>
+    <h3><span id="word" class="bld"> </span> <span id="gra"> </span></h3>
+
+    <span>* চিহ্ন খালিঘরগুলো আবশ্যক</span>
+    <div id="wrongbox">
+
+        <p class="txt"><span>ভুল*</span><span> শুধুমাত্র ভুল বানানটি পেস্ট করুন </span></p><textarea oninput="eddit()" id="wrong" name=""
+            cols="30" rows="2" placeholder="ভুল লেখাটি এখানে পেস্ট করুন"></textarea>
+        <p class="txt"><span>শুদ্ধ*</span> <span> শুধুমাত্র শুদ্ধ বানানটি লিখুন</span></p>
+        <textarea oninput="eddit()" id="correct" name="" cols="30" rows="2"
+            placeholder="ভুল লেখাটি এখানে শুদ্ধ করুন"></textarea>
+        <p class="txt"><span>আপনার মন্তব্য</span> </p><textarea oninput="eddit()" id="comment" name="" cols="30" rows="2"
+            placeholder="আপনার মন্তব্য লিখুন"></textarea>
+        <p class="txt"><span>মূলঅর্থ</span><span>ভুল বানানটি মূলঅর্থ বক্স থেকে কপি করুন</span></p><textarea disabled name="" value="" cols="30" rows="5" placeholder=""
+            id="oldmean"></textarea><br>
+
+
+
+        <span>নাম* </span><input value="" oninput="eddit()" placeholder="আপনার নাম" type="text" id="username">
+
+        <span>ইমেল* </span><input value=""  oninput="eddit()" placeholder="আপনার ইমেল" type="email" id="useremail">
+        <p>আপনার ইমেল গোপন রাখা হবে</p>
+        <button style="display: none;" id="sendWrongbtn" uid="" onclick="sendWrong()"> </button>
+
+
+
+    </div>
+
+
+    <div id="top">
+        <div id="corrHislist">
+        
+        
+        </div>
+    </div>
+    <div id="back">
+        <i class="fas fa-times"></i>
+    </div>
+    <script>
+
+document.getElementById('back').addEventListener('click', function(){
+    try {
+        
+        Android.finish()
+    } catch (error) {
+        
+    }
+})
+        function newSendWrong() {
+            sendWrongbtn.setAttribute('uid', '')
+            sendWrongbtn.style.display = 'none'
+            updateTag = false;
+            clickTop(wrongbox)
+            correctId.value = '';
+            wrongId.value = '';
+            commenId.value = '';
+        }
+
+       
+
+        var wrongId = document.getElementById('wrong')
+        var correctId = document.getElementById('correct')
+        var oldmean = document.getElementById('oldmean')
+        var username = document.getElementById('username')
+        var useremail = document.getElementById('useremail')
+        var commenId = document.getElementById('comment')
+        var wrongbox = document.getElementById('wrongbox')
+        var newSendBtn = document.getElementById('newSendBtn')
+    var corrHislist = document.getElementById('corrHislist')
+
+
+        var sendWrongbtn = document.getElementById('sendWrongbtn')
+
+        var loading = document.getElementById('loading')
+        var correction = {}
+        var loaded = false;
+        var updateTag = false
+        var one = true;
+        var myCorrection = {}
+        fdb.ref().on('value', function (data) {
+            //console.log(data.val())
+            correction = data.val()
+            loading.style.display = 'none'
+
+            var wrongWord = JSON.parse(localStorage['wrong'])
+            var saveEmail = localStorage['useremail']
+            if (!loaded) {
+
+                var i = 0;
+
+                for (var obj in correction) {
+                    loaded = false;
+                    //console.log(correction[obj])
+                    var { id, email, wrong, correct, comment } = correction[obj]
+                    if (one) {
+                        if (id == wrongWord.id && email == saveEmail) {
+
+                           
+                            setTimeout(function () {
+                                mycorrListAdd()
+                               
+                            }, 300)
+
+
+                            try {
+                                //Android.toast('আপনি আগে সংশোধন করেছেন')
+                            } catch (error) {
+                                //alert('আপনি আগে সংশোধন করেছেন')
+                            }
+                            one = false;
+                        } else {
+                            var objlength = Object.keys(correction).length;
+                            if (one && (i == objlength - 1)) {
+                                againTRy()
+                            }
+                        }
+                    }
+                    // console.log(i == objlength - 1)
+                    i++;
+                }
+
+                for (var key in correction) {
+                    var { id, email, wrong, correct, comment } = correction[key]
+                    if (id == wrongWord.id && email == saveEmail) {
+                        myCorrection[key] = correction[key]
+                    }
+                     
+                }
+
+
+
+            }
+
+        })
+        function againTRy() {
+            var wrongWord = JSON.parse(localStorage['wrong'])
+            var saveEmail = localStorage['useremail']
+
+            var txt = 'এটি কেউ আগে সংশোধন করেছে। আবার আপনি সংশোধন করবেন?'
+            for (var o in correction) {
+                var { id, email, wrong, correct, comment } = correction[o]
+                if (one) {
+                    if (id == wrongWord.id && saveEmail == undefined) {
+                        // correctId.value = correct;
+                        // wrongId.value = wrong;
+                        // commenId.value = comment == '' ? 'কোন মন্তব্য নেই' : comment;
+
+                        one = false;
+                        try {
+                            // Android.confirm(true, "না", 'হ্যাঁ')
+                            // alert(txt)
+                        } catch (error) {
+
+                        }
+                        //commenId.setAttribute('disabled', '')
+
+                    } else if (id == wrongWord.id) {
+                        // correctId.value = correct;
+                        // wrongId.value = wrong;
+                        // commenId.value = comment == '' ? 'কোন মন্তব্য নেই' : comment;
+
+                        try {
+                            // Android.confirm(true, "না", 'হ্যাঁ')
+
+
+                            //alert(txt)
+                        } catch (error) {
+
+                        }
+                        one = false;
+
+                        //commenId.setAttribute('disabled', '')
+
+                    }
+                }
+
+            }
+
+
+        }
+
+        function mycorrListAdd() {
+
+            sendWrongbtn.style.display = 'none'
+            try {
+                document.getElementById('title').remove()
+            } catch (error) {
+
+            }
+
+            var arr = []
+
+
+            var lastkey
+            // for (var key in myCorrection) {
+            //     // arr.push(`<li onclick="mycorrListView('${key}')"> <span> সংশোধন ${i + 1}</span> 
+            //     //     <span onclick="correctionDelete(${key})" class="delete"><i class="fas fa-trash-alt"></i></span></li>`)
+            //     var { wrong, correct, comment, name } = myCorrection[key]
+            //     var d = new Date(Number(key));
+            //     arr.push(`<div id="${key}" class="correctionview">
+            //         <p> ভুল: <span class="red">${wrong} <span></p>
+            //         <p> শুদ্ধ: <span class="blue">${correct}<span></p>
+            //         <p> মন্তব্য: ${comment == '' ? 'কোন মন্তব্য নেই' : comment}</p>
+            //         <p> সংশোধন করেছেন: ${name} <i>${d.toLocaleString()}</i></p>
+            //         <li>
+            //             <button onclick="updateBtnFun(${key})"><i class="far fa-edit"></i></button>
+            //            <button onclick="correctionDelete(${key})" class="delete"><i class="fas fa-trash-alt"></i></button>
+            //         </li>
+            //     </div>`)
+            //     i++
+            //     lastkey = key
+
+
+
+            //     //console.log(key)
+            // }
+
+            var keys = Object.keys(myCorrection)
+
+            for (var i = (keys.length - 1); i >= 0; i--) {
+                var key = keys[i];
+                var { wrong, correct, comment, name, update } = myCorrection[key]
+                var d = new Date(Number(key));
+
+                var ud = new Date(Number(update));
+                var updatetext = 'আপডেইট করেছেন: ' + ud.toLocaleString()
+
+                arr.push(`<div id="${key}" class="correctionview">
+                    <p> ভুল: <span class="red">${wrong} <span></p>
+                    <p> শুদ্ধ: <span class="blue">${correct}<span></p>
+                    <p> মন্তব্য: ${comment == '' ? 'কোন মন্তব্য নেই' : comment}</p>
+                    <p> সংশোধন করেছেন: ${name} <span>${d.toLocaleString()}</span></p>
+                    <p> ${update !== '' ? updatetext : ''}</p>
+                    <li>
+                        <button class="tool" onclick="updateBtnFun(${key})"><i class="far fa-edit"></i></button>
+                       <button class="tool" onclick="correctionDelete(${key})" class="delete"><i class="fas fa-trash-alt"></i></button>
+                       <button class="tool" id="newSendBtn" onclick="newSendWrong()"> <i class="fas fa-plus-circle"></i> নতুন সংশোধন যোগ করুন</button>
+                    </li>
+                </div>`)
+                lastkey = key
+            }
+            corrHislist.insertAdjacentHTML('beforebegin', '<h2 id="title">আমার সংশোধনী তালিকা</h2>')
+            corrHislist.innerHTML = arr.join('')
+            //console.log(myCorrection)
+            //mycorrListView(lastkey)
+            corrHislist.style.display = 'block'
+            myoption();
+
+            // first time correction
+            if (localStorage['first'] !== '') {
+                localStorage.removeItem('first')
+                localStorage['cActivity'] == 'true'
+               ;
+            }
+        }
+
+        function mycorrListView(key) {
+            console.log(key)
+            var { correct, wrong, comment } = myCorrection[key]
+            correctId.value = correct;
+            wrongId.value = wrong;
+            commenId.value = comment
+            console.log(correct + wrong + comment)
+            //corrHislist.style.display = 'none'
+
+        }
+
+
+        function updateBtnFun(key) {
+            mycorrListView(key)
+            sendWrongbtn.innerHTML = 'আপডেইট করুন'
+            sendWrongbtn.setAttribute('uid', key)
+            sendWrongbtn.style.display = 'block'
+            clickTop(wrongbox)
+            updateTag = true;
+
+        }
+
+        function eddit() {
+            if (!updateTag) {
+                sendWrongbtn.innerHTML = 'আমাদেরকে পাঠান '
+                sendWrongbtn.style.display = 'block'
+            }
+        }
+        // var myTime = setInterval(checkOld, 100)
+
+        // function checkOld() {
+        function correctionDelete(key) {
+
+            fdb.ref(key + '').remove()
+            Android.toast('সরানো হয়েছে')
+            //location.reload()
+            mycorrListAdd();
+            delete myCorrection[key]
+            document.getElementById(key).remove()
+        }
+
+
+
+
+        // }
+        function sendWrong() {
+
+            var wrongWord = JSON.parse(localStorage['wrong'])
+            var { id, word } = wrongWord
+
+
+            var wrongId = document.getElementById('wrong')
+            var correctId = document.getElementById('correct')
+            var oldmean = document.getElementById('oldmean')
+            var username = document.getElementById('username')
+            var useremail = document.getElementById('useremail')
+            var commenId = document.getElementById('comment')
+
+
+            var wrongVal = wrongId.value
+            var correctVal = correctId.value
+            var commentVal = commenId.value
+
+            var oldmeanVal = oldmean.value
+            var usernameVal = username.value
+            var useremailVal = useremail.value
+            console.log(wrongVal)
+            var uid = new Date().getTime().toString();
+            var updateUid = uid;
+            var oldUid = sendWrongbtn.getAttribute('uid')
+            //update
+            oldUid !== '' ? uid = oldUid : ''
+            one = false;
+            if ((wrongVal !== '') && (correctVal !== '') && (oldmeanVal !== '') && (usernameVal !== '') && (useremailVal !== '')) {
+                try {
+                    if (window.navigator.onLine) {
+                        if(localStorage['username'] == undefined){
+                            
+                            localStorage['first'] = 'true'
+                            location.reload()
+                        }
+                        fdb.ref(uid).set({
+                            'id': id,
+                            'name': usernameVal,
+                            'email': useremailVal,
+                            'wrong': wrongVal,
+                            'correct': correctVal,
+                            // 'oldmean': oldmeanVal,
+                            'word': word,
+                            'comment': commentVal,
+                            'update': oldUid !== '' ? updateUid : '',
+                            'adddb': false
+                        })
+                        sendWrongbtn.style.display = 'none'
+                        oldUid !== '' ? updateTag = false : '';
+
+                        localStorage['username'] = usernameVal
+                        localStorage['useremail'] = useremailVal
+                        localStorage['save'] = 'true'
+
+                    } else {
+                        alert('নেট সংযোগ দিন')
+                    }
+                } catch (error) {
+
+                }
+
+                
+
+
+                mycorrListAdd();
+                clickTop(corrHislist)
+
+                try {
+                    oldUid !== '' ? Android.toast('আপনার আপডেইট সম্পন্ন') : Android.toast('সংশোধন করার জন্য আপনাকে ধন্যবাদ');
+
+
+                } catch (error) {
+                    alert('সংশোধন করার জন্য আপনাকে ধন্যবাদ')
+
+                }
+            } else {
+
+                try {
+                    alert('* চিহ্ন খালিঘরগুলো ঠিকভাবে পূরণ করুন')
+
+                    Android.toast('* চিহ্ন খালিঘরগুলো ঠিকভাবে পূরণ করুন')
+                } catch (error) {
+                    alert('* চিহ্ন খালিঘরগুলো ঠিকভাবে পূরণ করুন')
+
+                }
+
+            }
+
+        }
+        var word = document.getElementById('word')
+        var gra = document.getElementById('gra')
+
+        var oldmean = document.getElementById('oldmean')
+        var username = document.getElementById('username')
+        var useremail = document.getElementById('useremail')
+        var wrongdWord = JSON.parse(localStorage['wrong'])
+
+        word.innerHTML = wrongdWord.word;
+        gra.innerHTML = wrongdWord.gram;
+        oldmean.value = wrongdWord.mean;
+
+        localStorage['username'] == undefined ? '' : username.value = localStorage['username']
+        localStorage['useremail'] == undefined ? '' : useremail.value = localStorage['useremail']
+
+
+        
+        wrongbox.addEventListener('click', function () {
+            // corrHislist.style.display = 'none'
+        })
+
+
+        function corrHistory() {
+            corrHislist.style.display = 'block'
+        }
+        function clickTop(el) {
+            el.scrollIntoView(true);
+            el.scrollIntoView({ behavior: "smooth", block: "end", inline: "nearest" });
+            window.scrollBy({
+                top: -50,
+                left: 0,
+                behavior: 'smooth'
+            });
+            
+
+        }
+    function myoption() {
+        
+        
+            // console.log(localStorage['cActivity'])
+            if (localStorage['cActivity'] == 'true') {
+               
+                
+
+                var el = document.getElementById('top')
+                el.scrollIntoView(true);
+                el.scrollIntoView({ behavior: "smooth", block: "end", inline: "nearest" });
+                window.scrollBy({
+                    top: 0,
+                    left: 0,
+                    behavior: 'smooth'
+                });
+                localStorage.removeItem('cActivity')
+
+            }
+
+        
+    }
+   
+
+    
+
+       
+    </script>
+
+  
+</body>
+
+</html>

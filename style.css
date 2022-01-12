@@ -1,0 +1,472 @@
+@font-face {
+    font-family: Adorsholipi;
+    src: url(./font/Adorsholipi.ttf);
+  }
+
+@font-face{
+    font-family: 'Adorsholipi' ;
+    src: url(./font/Adorsholipi.ttf);
+}
+body{
+    margin: 0px;
+    font-family: Adorsholipi ;
+    src: url(./font/Adorsholipi.ttf);
+    font-size: 14px;
+    
+    
+}
+
+#navbar{
+    position: fixed;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+    width: 100vw;
+    top: 0px;
+    background-color: white;
+    z-index: 100;
+    user-select: none;
+    color: #E65100;
+}
+.nav_item{
+    padding: 14px 10px;
+    font-size: 1.3em;
+    cursor: pointer;
+}
+.nav_center {
+    cursor: none;
+}
+.nav_item:hover{
+    border: 0px solid white;
+
+}
+.nav_right {
+    margin-right: 12px;
+   
+}
+.nav_left{
+    margin-left: 12px;
+   
+}
+.input_box{
+    display: block;
+    color: #E65100;
+}
+.input_box i{
+    color: #7a7a7a;
+    font-size: 0.85em;
+    padding-right: 3px;
+}
+.input_box:hover{
+   border-bottom: 1px solid gray;
+   margin-bottom: -1px;
+}
+#input_feild{
+    border: none;
+    outline: none;
+    padding: 5px;
+    font-size: 0.95em;
+    width: 180px;
+    font-family: Adorsholipi;
+    src: url(./font/Adorsholipi.ttf);
+
+}
+
+#more{
+    user-select: none;
+    position: fixed;
+    right: 0px;
+    z-index: 305;
+    top: 0px;
+    display: none;
+    width: max-content;
+    background: white;
+    border-radius: 5px;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+}
+#more li{
+    margin: 0px 0px;
+    padding: 10px 15px;
+    list-style: none;
+    font-size: 1.19em;
+    cursor: pointer;
+}
+#more li:hover{
+    background-color: #E65100;
+}
+
+.more_item i{
+    color: #E65100;
+    margin: 0px 10px 0px 0px;
+}
+
+#sidebar{
+    user-select: none;
+    top: 0px;
+    position: fixed;
+    left: 0px;
+    z-index: 305;
+    display: none;
+    width: max-content;
+    background: white;
+    border-radius: 5px;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+}
+.sidebar_list_item{
+    font-size: 1.19em;
+    padding: 10px 15px;
+    cursor: pointer;
+}
+.sidebar_list_item:hover{
+    background-color: #E65100;
+}
+.sidebar_list_item i{
+    color: #E65100;
+    margin: 0px 10px 0px 10px;
+}
+
+#wordlist, #favouritlist{
+    margin: 5px;
+    top: 4.5em;
+    position: relative;
+    background-color: rgb(255, 255, 255);
+    border-radius: 10px;
+    box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
+    user-select: none;
+    margin-bottom: 50vh;
+}
+#wordlist p, #favouritlist p{
+    margin: 7px 0px;
+    list-style: none;
+    border-bottom: 0.5px solid gray;
+    font-size: 1.2em;
+    cursor: pointer;
+    padding: 12px 15px;
+    line-height: 1;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+#wordlist p:hover, #favouritlist p:hover{
+    background-color: rgb(231, 241, 245);
+}
+.wordlist i{
+    margin: 0px 10px 0px 0px;
+}
+.hiswordlist i, .searchwordlist i{
+    opacity: 0.5;
+}
+.favwordlist i {
+    color: #E65100;
+}
+#wordlist p:last-child, #favouritlist p:last-child{
+    border-bottom: none;
+}
+#meaningbox{
+    top: 60px;
+    position: fixed;
+    background: white;
+    width: 100%;
+    height: 100vh;
+    display: none;
+    z-index: 10;
+}
+#gra, .bld{ 
+    color: rgb(46, 43, 43);
+    font-weight: 700;
+}
+.bld{
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: clip; 
+    font-weight: 700;
+    font-family: 'Adorsholipi' ;
+    src: url(./font/Adorsholipi.ttf);
+}
+#navigation{
+    position: fixed;
+    bottom: 0px;
+    width: 100%;
+    z-index: 15;
+   
+}
+#m_header{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    margin: 0px 15px;
+    border-radius: 40px 40px 0px 0px;
+    box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
+    user-select: none;
+    background-color: white;
+    padding: 3px 0px 3px 0px; 
+}
+.m_header_item{
+     font-size: 1.2em;
+    padding: 5px 15px;
+    border-radius: 50px;
+    background: rgb(231, 241, 245);
+    color: #E65100;
+}
+.round:hover{
+    /* border-radius: 200%; */
+    background-color: lightslategray
+}
+#wordname{
+    margin: 10px 0px;
+    box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
+    padding: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    font-size: 1.18em;
+    color: #E65100;
+    /* border-radius: 5px; */
+}
+.react_item{
+font-size: 16px;
+  padding: 10px 5px;
+}
+#meaning{
+    position: absolute;
+    width: 95vw;
+    height: 70vh;
+    overflow-y: scroll;
+    padding: 10px 15px 60vh 15px;
+    font-size: 1.2em;
+}
+#mean{
+    padding: 0px 0px 400px 0px;
+    line-height: 1.4;
+
+}
+#meantxt{
+    line-height: 1.8;
+    background: #f0f5eb;
+    padding: 10px;
+    margin-right: 13px;
+    border-radius: 15px;
+}
+
+
+#outclick{
+    top: 0px;
+    width: 100vw;
+    height: 100vh;
+    z-index: 300;
+    opacity: 0.5;
+    position: fixed;
+    display: none;
+    background-color: #5b59594d;
+}
+
+#bottomNav{
+    bottom: 0px;
+    position: fixed;
+    width: 100vw;
+    height: auto;
+    background: white;
+    -webkit-user-select: none;
+}
+
+.bottom{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
+}
+
+.bottom_btn{
+    padding: 7px 10px;
+    margin: 0px 0px 2px 0px;
+    cursor: pointer;
+}
+/* .bottom_btn:hover{
+    border-bottom: #E65100 solid 2px;
+} */
+.bottom_btn span{
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: clip; 
+    font-size: 1.17em;
+}
+.bottom_btn i {
+    color: #E65100;
+}
+#keybar{
+    margin-left: 30px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    border-left: 1px solid gray;
+    border-right: 1px solid gray;
+    box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
+}
+.bottom_btn_key{
+    padding: 5px 15px;
+    margin: 0px 0px 2px 0px;
+    cursor: pointer;
+    font-size: 1.17em;
+}
+.bdr{
+    border-right: 0.5px solid gray;
+}
+
+#note_doc{
+    display: none;
+    position: fixed;
+    top: 1%;
+    width: 98%;
+    margin-left: 1%;
+    height: auto;
+    z-index: 400;
+    background-color: white;
+    border-radius: 5px;
+    box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
+}
+#notehead{
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
+    margin: 15px 15px 5px 15px;
+    border-radius: 5px;
+}
+.notehead_item{
+    padding: 10px 10px;
+    font-size: 1.3em;
+    font-weight: 500;
+    font-family: 'Adorsholipi' ;
+    src: url(./font/Adorsholipi.ttf);
+}
+
+
+#notebox{
+    display: flex;
+    flex-direction: column;
+
+}
+.notebox_item{
+    padding: 10px 15px;
+    
+}
+#notetitle{
+    font-size: 1.1em;
+    padding: 5px;
+    outline: none;
+    width: -webkit-fill-available;
+    border-radius: 5px;
+}
+#notetxt{
+    border: 1px solid gray;
+    width: -webkit-fill-available;
+    margin: 0px;
+    font-size: 1.1em;
+    padding: 5px 6px;
+    border-radius: 5px;
+    font-family: Adorsholipi ;
+    src: url(./font/Adorsholipi.ttf);
+}
+#actionbtn{
+    text-align: center;
+    cursor: pointer;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    padding: 5px 0px 15px 0px;
+}
+.action_btn{
+    font-size: 1.3em;
+    border-radius: 5px;
+    padding: 10px 10% 10px 10%;
+    box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
+
+}
+
+.action_btn:hover{
+    color: #E65100;
+    background-color: bisque;
+}
+
+#allnoteView{
+    background:white;
+    position: fixed;
+    top: 0px;
+    z-index: 340;
+    width: 100%;
+    height: 100%;
+    display: none;
+}
+#allnoteView_haed{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+    top: 0px;
+    background-color: white;
+    user-select: none;
+    color: #E65100;
+  
+    font-size: 1.5em;
+}
+.alnote_head_item{
+    padding: 15px 15px;
+}
+.note_item{
+    padding: 10px 15px;
+    border-bottom: 0.5px solid gray;
+    font-size: 1.2em;
+    cursor: pointer;
+    line-height: 1.5;
+    margin: 0px;
+}
+@media screen and (max-width: 320px) {
+    .nav_item{
+        padding: 14px 5px;
+        font-size: 1.2em;
+    }
+    .nav_right {
+        margin-right: 10px;
+    }
+    .nav_left{
+        margin-left: 10px;
+    }
+    .input_box{
+        display: block;
+    }
+    .input_box i{
+        color: #7a7a7a;
+        font-size: 0.9em;
+        padding-right: 3px;
+    }
+    .input_box:hover{
+       border-bottom: 1px solid gray;
+    }
+    #input_feild{
+        outline: none;
+        border: none;
+        font-size: 0.9em;
+        width: fit-content;
+        
+    }
+
+    .bottom_btn span, .bottom_btn_key{
+        font-size: 1.1em;
+    }
+    .action_btn{
+        font-size: 1.2em;
+        padding: 10px 5% 10px 5%;
+    }
+
+    #wordlist p, #favouritlist p{
+        margin: 7px 0px;
+        font-size: 1.05em;
+        padding: 10px 15px;
+        
+    
+    }
+  }
+.active{
+    border-bottom: 2px solid #E65100;
+}

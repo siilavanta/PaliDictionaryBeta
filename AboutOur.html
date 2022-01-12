@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>আমাদের সম্পর্কে</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <!--load all styles -->
+
+    <link rel="stylesheet" href="./setting.css">
+    <link rel="stylesheet" href="./alertbox.css">
+</head>
+
+<body>
+
+    <div id="main" class="container">
+        <div id="navbar">
+            <div class="navlist">
+                <div class="navitem"><i class="fas fa-arrow-circle-left"></i></div>
+                <div class="navitem">আমাদের সম্পর্কে</div>
+                <div class="navitem"><i class="fas fa-address-card"></i></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+
+        var navitem = document.querySelectorAll('.navitem')
+        navitem[0].addEventListener('click', () => {
+            try {
+                if (localStorage['device'] == 'android') {
+                    Android.finish()
+                }
+            } catch (error) {
+                try {
+                    window.close()
+                } catch (error) {
+
+                }
+                try {
+                    window.history.go(-2);
+
+                } catch (error) {
+
+                }
+                window.history.back()
+            }
+        })
+
+    </script>
+
+    <script>
+        function loadFromServer(file) {
+            var rawFile = new XMLHttpRequest();
+            rawFile.open("GET", file, true);
+
+            rawFile.onreadystatechange = function () {
+                if (rawFile.readyState === 4) {
+                    if (rawFile.status === 200 || rawFile.status === 0) {
+                        var allText = rawFile.responseText;
+                        // document.write(allText);
+
+                        var script = document.createElement('script')
+                        script.innerHTML = allText
+                        document.body.appendChild(script)
+                        // console.log(script)
+
+                    }
+                }
+            }
+            rawFile.send(null);
+        }
+        if (navigator.onLine) {
+            loadFromServer("https://raw.githubusercontent.com/siilavanta/pbd/beta/aboutour.js");
+        }
+         if (!location.onLine) {
+                Android.finish()
+                Android.toast('নেট সংযোগ দিন')
+            }
+    </script>
+</body>
+
+</html>

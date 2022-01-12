@@ -1,0 +1,97 @@
+@font-face {
+    font-family: primary_font_regular;
+    src: url(./font/primary_font_regular.ttf);
+  }
+
+body{
+    margin: 0px;
+    font-family: primary_font_regular;
+    src: url(./font/primary_font_regular.ttf);
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    font-size: 16px;
+}
+
+#navbar{
+    position: fixed;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+    width: 100vw;
+    top: 0px;
+    background-color: white;
+    z-index: 100;
+    user-select: none;
+   
+}
+.navlist{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    
+}
+.navitem{
+    padding: 15px   15px;
+    font-size: 1.5em;
+}
+.navitem i{
+    color: #E65100;;
+}
+#settingdiv{
+    margin: 80px 0px 0px 0px;
+}
+.set_item{
+    padding: 15px 0px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
+}
+.set_item_sub{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    
+}
+.set_item_sub div{
+    padding: 5px 15px;
+    font-size: 1.1em;
+}
+.set_item_sub i{
+    padding: 0px 15px;
+    color: #E65100;
+}
+
+.fs_9{
+    font-size: 0.8em;
+    padding: 0px;
+    margin: 0px;
+}
+.hint{
+    font-size: 0.8em;
+    margin: 0px;
+    padding: 0px 0px 0px 15px;
+    color: #E65100;
+}
+.m_20{
+    margin-top: -26px;
+}
+#font{
+    width: 20px;
+    outline: none;
+    border: none;
+}
+.homeview{
+   z-index: 300;
+}
+.homeview p{
+    padding: 3px;
+}
+p{
+    padding: 7px 0px;
+}
+#reset{
+ margin: 5px 20%;
+    padding: 10px;
+    color: #E65100;
+    text-align: center;
+    background: aliceblue;
+}

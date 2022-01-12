@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <title>Pali dictionary</title>
+    <link rel="stylesheet" href="./css/all.css">
+    <!--load all styles -->
+    <!-- <link rel="stylesheet" href="./css/regular.css">
+    <link rel="stylesheet" href="./css/solid.css">
+    <link rel="stylesheet" href="./css/fontawesome.css"> -->
+    <link rel="stylesheet" href="./style.css">
+    <script src="./www.gstatic.com/firebasejs/8.4.1/firebase-app.js"></script>
+    <script src="./cdn.firebase.com/js/client/2.4.2/firebase.js"></script>
+
+    <script src="./www.gstatic.com/firebasejs/8.4.1/firebase-analytics.js"></script>
+    <script src="./www.gstatic.com/firebasejs/8.4.1/firebase-firestore.js"></script>
+    <script src="./www.gstatic.com/firebasejs/8.4.1/firebase-database.js"></script>
+    <script src="./fdbconfig.js"></script>
+    <script src="./correctresult.js"></script>
+
+    <script>
+        // var fdbSrc = [
+        //     'www.gstatic.com/firebasejs/8.4.1/firebase-app.js',
+        //     'cdn.firebase.com/js/client/2.4.2/firebase.js',
+        //     'www.gstatic.com/firebasejs/8.4.1/firebase-analytics.js',
+        //     'www.gstatic.com/firebasejs/8.4.1/firebase-firestore.js',
+        //     'www.gstatic.com/firebasejs/8.4.1/firebase-database.js',
+
+        // ]
+
+
+
+        // if(navigator.onLine){
+        //     fdbSrc.forEach(function(link){
+        //         setTimeout(function(){
+        //             var s = document.createElement('script');
+        //             s.src = './'+ link;
+        //             document.head.append(s)
+        //         }, 2000)
+        //     })
+        //     setTimeout(function () {
+        //         var s = document.createElement('script');
+        //         s.src = './' + 'fdbconfig.js';
+        //         document.head.append(s)
+        //     }, 3000)
+
+        // }
+        function set() {
+            fdb.ref().set({ 'a': 3030 })
+        }
+    </script>
+    <style>
+        /* *{
+            background-color: rgb(32, 30, 30) !important;
+            color: rgb(226, 221, 221) !important;
+        } */
+        #popupbox {
+            z-index: 1000;
+        }
+
+        #popup {
+            width: 80%;
+            height: 300px;
+            overflow: auto;
+            background-color: white;
+            position: fixed;
+            z-index: 1000;
+            right: 10%;
+
+            border: 1px solid gray;
+            box-shadow: rgb(0 0 0 / 2%) 0px 1px 3px 0px, rgb(27 31 35 / 15%) 0px 0px 0px 1px;
+        }
+
+        #popupBar {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            background: #E65100;
+
+            align-items: center;
+            position: fixed;
+            width: inherit;
+        }
+
+        .popupbar-item {
+            padding: 3px 5px;
+        }
+
+        #popupBar input {
+            background-color: white;
+            border: solid 1px #E65100;
+            border-radius: 5px;
+            width: 150px;
+            padding: 1px 5px;
+            font-family: Adorsholipi;
+            src: url(./font/Adorsholipi.ttf);
+            outline: none;
+        }
+
+        #handleBar {
+            cursor: move;
+            width: 80px;
+            color: white;
+            position: relative;
+            margin: 0px;
+        }
+
+        #popqueryresult {
+            display: none;
+            position: fixed;
+            background: white;
+            margin-top: 35px;
+            width: 150px;
+            margin-left: 5px;
+            box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+
+        }
+
+        #popqueryresult li {
+            list-style: none;
+            padding: 2px 10px;
+            font-size: 1.1em;
+            border-bottom: 1px solid gray;
+        }
+
+        #pophislist {
+            display: none;
+            position: fixed;
+            background: white;
+            margin-top: 35px;
+            width: 150px;
+            max-height: 200px;
+            margin-left: 5px;
+            overflow: auto;
+            box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+
+        }
+
+        #pophislist li {
+            list-style: none;
+            padding: 2px 10px;
+            font-size: 1.1em;
+            border-bottom: 1px solid gray;
+        }
+
+        #popqueryresult li:hover {
+
+            background-color: #E65100;
+        }
+
+        #popword {
+            font-size: 1.2em;
+        }
+
+        #popupmean {
+            line-height: 1.8;
+        }
+
+        #popupShow {
+            margin-top: 30px;
+            font-size: 1.1em;
+            padding: 10px 6px;
+            height: 100%;
+        }
+
+        .popup-ic {
+
+            color: white;
+            padding: 2px 8px;
+            border-radius: 50px;
+        }
+
+        /* #popupnavigation {
+            display: none;
+        } */
+
+        #loadmore {
+            background-color: #E65100;
+
+            margin: 7px 0px;
+            list-style: none;
+            border-bottom: 0.5px solid gray;
+            font-size: 1.2em;
+            cursor: pointer;
+            padding: 12px 15px;
+            line-height: 1;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+        }
+
+        .notice {
+            color: #221b2c;
+            background-color: #f1e9e5;
+            padding: 10px;
+            border-radius: 15px;
+            margin-right: 13px;
+            font-size: 0.9em;
+
+        }
+
+        #correctionbtn {
+            background-color: royalblue;
+            color: white;
+            display: inline;
+            padding: 7px 15px;
+            border-radius: 24px;
+        }
+
+        .mycorrectionbtn {
+            background-color: royalblue;
+            color: white;
+            display: inline;
+            padding: 7px 15px;
+            border-radius: 24px;
+            display: none;
+        }
+
+        #wrongbox {
+            margin: 10px 13px 10px 0px;
+            /* display:none; */
+            background: aquamarine;
+            padding: 10px 5px;
+            border-radius: 10px;
+        }
+
+        #correctionResult {
+            margin-right: 13px;
+
+        }
+
+        #correctionResult p {
+            margin: 0px;
+            padding: 3px 0px;
+        }
+
+        .correctionview {
+            background: #d9d6d6;
+            padding: 3px 5px;
+            border-radius: 5px;
+            margin: 3px;
+        }
+
+        .red {
+            color: red;
+        }
+
+        .blue {
+            color: royalblue;
+        }
+
+        .updatedate {
+            font-size: 0.8em;
+            color: gray;
+        }
+
+        .createdate {
+            font-size: 0.8em;
+
+        }
+
+        .commenttxt {
+
+            color: #221b2c;
+        }
+    </style>
+    <!-- <script src="./ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> -->
+    <script src="./popup.js"></script>
+</head>
+
+<script>
+
+
+    var pbd_word = []
+    var mydic = {
+        "pbd": {}
+    }
+    function pbdw() {
+
+        var src = "./data/pbd.js"
+        function loadJson(file) {
+            var finalstr;
+            var rawFile = new XMLHttpRequest();
+            //var rawFile = this
+            // rawFile.overrideMimeType("application/json");
+            rawFile.open("GET", file, true);
+            rawFile.onreadystatechange = function () {
+                if (rawFile.readyState === 4 && rawFile.status == "200") {
+                    maintext = rawFile.responseText
+
+                    eval(maintext)
+                    for (var i = 0; i < pbd.length; i++) {
+                        var word = pbd[i][0]
+                        pbd_word.push(word)
+                        
+                    }
+                    mydic.pbd = pbd
+                    console.log(pbd)
+                    console.log(pbd.length)
+
+                    // console.log(paraNumArray[1])
+
+                }
+            }
+            rawFile.send(null);
+            return finalstr
+        }
+        loadJson(src)
+
+    }
+
+
+
+    if (window.localStorage['device'] === 'android') {
+        var word = "|" + window.localStorage['word']
+        var pbd_word = word.split('|')
+
+        setTimeout(function () {
+            console.log(pbd_word[0])
+            console.log(pbd_word[pbd_word.length - 1])
+        }, 1000)
+
+
+    } else {
+        pbdw();
+    }
+
+
+</script>
+
+<body id="body">
+
+
+    <div style="display: none;">
+        <i class="far fa-sun"></i>
+        <i class="fas fa-chevron-left"></i>
+        <i class="fas fa-chevron-left"></i>
+        <i class="far fa-user"></i>
+        <i class="fas fa-sync-alt"></i>
+        <i class="far fa-comment-alt"></i>
+        <i class="far fa-bell notify"></i>
+        <i class="fas fa-ellipsis-v threedot"></i>
+        <i class="fas fa-share-alt"></i>
+        <i class="fas fa-search"></i>
+        <i class="fas fa-thumbs-up full"></i>
+        <i class="far fa-thumbs-up fill"></i>
+        <i class="fas fa-times close"></i>
+        <i class="fas fa-reply"></i>
+        <i class="far fa-eye"></i>
+        <i class="far fa-question-circle"></i>
+        <i class="fas fa-moon"></i>
+        <i class="far fa-sun"></i>
+        <i class="fas fa-sort-amount-up"></i>
+        <i class="far fa-heart"></i>
+        <i class="fas fa-grip-lines"></i>
+        <i class="fas fa-info-circle"></i>
+        <i class="fas fa-question-circle"></i>
+    </div>
+
+    <div id="navbar">
+        <div id="nav_left" class="nav_left nav_item">
+            <span id="menu">
+                <i class="fas fa-bars"></i>
+            </span>
+        </div>
+        <div class="nav_center nav_item">
+            <div id="input_div">
+                <span>
+                    <span class="input_box"><i class="fas fa-search"></i><input oninput="search()" autofocus
+                            id="input_feild" placeholder="পাল়ি শব্দ লিখুন" type="search"></span>
+                </span>
+            </div>
+        </div>
+        <!-- <div id="nav_key" action="show" class=" nav_item">
+            <span id="keyboard"><i class="far fa-keyboard"></i></span>
+            
+        </div> -->
+        <div id="nav_right" class="nav_right nav_item">
+            <span id="option"><i class="fas fa-ellipsis-v threedot"></i></span>
+
+        </div>
+    </div>
+    <div id="more">
+        <li id="setting" class="more_item"><i class="fas fa-tools"></i> বিশেষ অভিরুচি</li>
+        <li id="favword" class="more_item"><i class="fab fa-gratipay"></i> পছন্দের শব্দ</li>
+        <li id="hisword" class="more_item"><i class="fas fa-history"></i> ইতিহাস তালিকা</li>
+        <li id="note" class="more_item"><i class="far fa-edit"> </i> আমার নোট</li>
+
+    </div>
+    <noscript>এই ডিভাইসটিতে চালু করা যাচ্ছে না।</noscript>
+
+    <div id="wordlist">
+        <div id="w_item" live="search"></div>
+        <p id="loadmore" style="display: none;" onclick="loadMoreWordList()">আরো দেখুন</p>
+    </div>
+
+
+    <div id="meaningbox">
+
+        <div id="wordname">
+            <div class="word_head">
+                <div id="w_gra">
+
+                </div>
+
+            </div>
+            <div id="react">
+                <span id="mypop" class="react_item"><i class="far fa-window-restore"></i></span>
+                <span id="mynote" class="react_item"><i class="far fa-edit"></i></span>
+                <span id="share" class="react_item"> <i class="fas fa-share-alt"></i></span>
+                <span id="fav" class="react_item"><i class="far fa-heart"></i></span>
+            </div>
+        </div>
+        <div id="navigation">
+            <div id="m_header">
+                <!-- <span id="page_search" class="m_header_item"><i class="fas fa-search"></i></span> -->
+                <span id="prev" class="m_header_item round"><i class="fas fa-chevron-left"></i></span>
+                <span onclick="cls()" class="m_header_item round"><i class="fas fa-times close"></i></span>
+                <span id="next" class="m_header_item round"><i class="fas fa-chevron-right"></i></span>
+
+            </div>
+        </div>
+
+        <div id="meaning"></div>
+
+        <div style="display: none;" id="popupbox">
+
+            <div id="popup">
+                <div id="popupBar">
+                    <div class="popupbar-item"><input oninput="popupSearch()" id="popsearch"
+                            placeholder="পাল়ি শব্দ লিখুন" type="search">
+                    </div>
+
+                    <span class="popupbar-item popup-ic" id="popupnavigation" onclick="pophisbtn()"><i
+                            class="fas fa-history"></i> </span>
+                    <p class="popupbar-item" id="handleBar">::::::</p>
+                    <div class="popupbar-item popup-ic" id="popupclose" onclick="popclose()"><i
+                            class="fas fa-times close"></i>
+                    </div>
+                </div>
+                <div id="popqueryresult">
+
+
+                </div>
+                <div id="pophislist">
+
+
+                </div>
+                <div id="popupShow">
+
+                    <p><b id="popupword"></b> <span id="popupgram"></span></p>
+                    <p id="popupmean"></p>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+    <div id="note_doc">
+        <div id="notehead">
+            <div class="notehead_item"><span id="note_word">My note</span></div>
+            <div onclick="noteclose()" class="notehead_item">
+                <span id="close"><i class="fas fa-times close"></i></span>
+            </div>
+        </div>
+        <div id="notebox">
+
+            <div class="notebox_item">
+                <textarea spellcheck="false" rows="6" id="notetxt" placeholder=" এখানে নোট লিখুন"
+                    type="text"></textarea>
+            </div>
+
+        </div>
+        <div id="actionbtn">
+            <div class="action_btn" id="notesave">সংরক্ষণ করুন</div>
+            <div class="action_btn" id="notedelete">নোট মুছুন</div>
+
+        </div>
+
+    </div>
+
+    <div id="allnoteView">
+        <div id="allnoteView_haed">
+            <span onclick="allnoteViewClose()" class="alnote_head_item"><i class="fas fa-chevron-left"></i></span>
+            <span class="alnote_head_item">আমার নোট</span>
+            <span class="alnote_head_item"><i class="fas fa-ellipsis-v threedot"></i></span>
+        </div>
+        <div id="allnote_word"></div>
+
+    </div>
+
+    <div id="bottomNav">
+
+        <div class="bottom">
+            <div onclick="hisActive('his')" id="historybtn" class="bottom_btn">
+                <span class="bottom_btn_name"><i class="fas fa-history"></i> ইতিহাস</span>
+            </div>
+            <div id="keybar">
+                <span onclick="softKey('ৰ')" class="bottom_btn_key bdr">ৰ</span>
+                <span onclick="softKey('ল়')" class="bottom_btn_key">ল়</span>
+            </div>
+            <div onclick="favActive('fav')" id="favouritebtn" class="bottom_btn">
+                <span class="bottom_btn_name"><i class="fab fa-gratipay"></i> পছন্দের শব্দ</span>
+            </div>
+        </div>
+    </div>
+    <div id="sidebar">
+        <div>
+            <!-- <div id="sidebar_head">
+
+                <img class="headerbox_item" id="sidebar_head_img" height="90px"
+                    width="90px">
+                <h2 class="headerbox_item">পালি-বাংলা</h2>
+                <h2 class="headerbox_item">অভিধান</h2>
+
+            </div> -->
+            <div id="sidebar_list">
+                <div id="update" class="sidebar_list_item"><i class="fas fa-sync"></i>
+                    আপডেইট অ্যাপ</div>
+                <div id="share" class="sidebar_list_item"><i class="fas fa-share-alt"></i>
+                    শেয়ার করুন</div>
+                <div id="rate" class="sidebar_list_item"><i class="fas fa-thumbs-up"></i>
+                    রেটিং দিন</div>
+                <div id="ourapp" class="sidebar_list_item"><i class="fab fa-app-store-ios"></i>
+                    আমাদের অ্যাপ সমূহ</div>
+                <!-- <div id="about" class="sidebar_list_item"><i class="fas fa-address-card"></i>
+                    আমাদের সম্পর্কে</div> -->
+                <div id="app_about" class="sidebar_list_item"><i class="fas fa-info-circle"></i>
+                    অ্যাপটি সম্পর্কে</div>
+                <div style="display: none;" id="help" class="sidebar_list_item"><i class="fas fa-question-circle"></i>
+                    সাহায্য</div>
+
+
+
+            </div>
+        </div>
+    </div>
+
+    <div onclick="outclick()" id="outclick"></div>
+    <script src="./app.js"></script>
+    <script>
+
+
+    </script>
+
+    <script>
+        var app = 1;
+        function loadFromServer(file) {
+            var rawFile = new XMLHttpRequest();
+            rawFile.open("GET", file, true);
+
+            rawFile.onreadystatechange = function () {
+                if (rawFile.readyState === 4) {
+                    if (rawFile.status === 200 || rawFile.status === 0) {
+                        var allText = rawFile.responseText;
+                        // document.write(allText);
+
+                        var script = document.createElement('script')
+                        script.innerHTML = allText
+                        document.body.appendChild(script)
+                        // console.log(script)
+
+                    }
+                }
+            }
+            rawFile.send(null);
+        }
+        if (navigator.onLine) {
+            try {
+                loadFromServer("https://raw.githubusercontent.com/siilavanta/pbd/main/appupdate.js");
+            } catch (error) {
+
+            }
+
+            try {
+                // loadFromServer("https://raw.githubusercontent.com/siilavanta/pbd/main/config.js");
+            } catch (error) {
+
+            }
+
+        }
+
+        try {
+            eval(localStorage['app'])
+        } catch (error) {
+
+        }
+
+        try {
+            if (localStorage['helpactive'] == 'true') {
+                document.getElementById('help').style.display = 'block'
+            }
+        } catch (error) {
+
+        }
+
+    </script>
+
+</body>
+
+</html>
